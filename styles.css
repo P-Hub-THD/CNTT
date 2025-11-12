@@ -1,0 +1,500 @@
+/* --- Bảng màu mới (Green & Gold Accent) ---
+ * Primary: #2D6A4F (Xanh rêu đậm)
+ * Secondary: #40916C (Xanh rêu nhạt)
+ * Accent: #FEE715 (Vàng chanh - dùng cho logo/nổi bật/hover)
+ * Background: #F7F9FC (Xám/Trắng nhẹ)
+ * Text: #333333 (Xám đen)
+ */
+
+:root {
+    --color-primary: #2D6A4F;
+    --color-secondary: #40916C;
+    --color-accent: #FEE715;
+    --color-background: #F7F9FC;
+    --color-text: #333333;
+    --color-light-text: #ffffff;
+}
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+    color: var(--color-text);
+    background-color: var(--color-background);
+}
+
+/* --- Header --- */
+header {
+    background: var(--color-primary);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--color-light-text);
+    letter-spacing: 1.5px;
+    transition: color 0.3s ease;
+}
+
+header .logo:hover {
+    color: var(--color-accent);
+}
+
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: var(--color-light-text);
+    font-weight: 400;
+    padding: 5px 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: var(--color-accent);
+    transition: width 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--color-accent);
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* --- Hero Slideshow --- */
+.hero {
+    position: relative;
+    height: 480px;
+    overflow: hidden;
+    color: white;
+    text-align: center;
+}
+
+.hero h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 52px;
+    font-weight: 900;
+    z-index: 2;
+    background: rgba(45, 106, 79, 0.75);
+    padding: 20px 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    letter-spacing: 2px;
+}
+
+/* Slideshow Animation setup */
+.slideshow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.slideshow img {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: slide 12s infinite;
+    opacity: 0;
+}
+
+.slideshow img:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.slideshow img:nth-child(2) {
+    animation-delay: 4s;
+}
+
+.slideshow img:nth-child(3) {
+    animation-delay: 8s;
+}
+
+@keyframes slide {
+    0% {
+        left: 100%;
+        opacity: 0;
+    }
+
+    10% {
+        left: 0;
+        opacity: 1;
+    }
+
+    30% {
+        left: 0;
+        opacity: 1;
+    }
+
+    40% {
+        left: -100%;
+        opacity: 0;
+    }
+
+    100% {
+        left: -100%;
+        opacity: 0;
+    }
+}
+
+/* --- Main Content --- */
+main {
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 50px;
+    background-color: white;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+}
+
+h2 {
+    color: var(--color-primary);
+    margin-top: 50px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--color-secondary);
+    font-weight: 700;
+    font-size: 28px;
+    text-transform: uppercase;
+}
+
+h3 {
+    color: var(--color-secondary);
+    margin-top: 35px;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+/* Cải thiện typography cho nội dung chính */
+p {
+    margin: 18px 0;
+    text-align: justify;
+    font-weight: 400;
+    color: #4a4a4a;
+}
+
+p.indent-3em {
+    text-indent: 3em;
+    text-align: left;
+    font-style: italic;
+    color: var(--color-text);
+}
+
+p.indent-5em {
+    text-indent: 5em;
+    text-align: left;
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+ul {
+    padding-left: 25px;
+}
+
+li {
+    margin-left: 0;
+    margin-bottom: 12px;
+    list-style-type: none;
+    position: relative;
+    padding-left: 20px;
+}
+
+li::before {
+    content: "🌿";
+    color: var(--color-secondary);
+    font-size: 14px;
+    position: absolute;
+    left: 0;
+    top: 2px;
+}
+
+/* Tiêu đề cẩm nang */
+.handbook-title {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--color-primary);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.handbook-subtitle {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin-top: 0;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--color-background);
+    padding-bottom: 10px;
+}
+
+.section-header {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--color-primary);
+    margin-top: 45px;
+    padding: 10px 0;
+}
+
+main img {
+    display: block;
+    margin: 40px auto;
+    max-width: 80%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+main img:hover {
+    transform: scale(1.02);
+}
+
+/* --- Footer --- */
+footer {
+    background: var(--color-primary);
+    color: var(--color-light-text);
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 0;
+    border-top: 5px solid var(--color-accent);
+}
+
+footer p {
+    margin: 8px 0;
+    font-weight: 300;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.sidebar a {
+    background: var(--color-secondary);
+    color: white;
+    padding: 18px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 24px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sidebar a:hover {
+    background: var(--color-accent);
+    color: var(--color-primary);
+    transform: scale(1.15);
+    box-shadow: 0 6px 15px rgba(254, 231, 21, 0.5);
+}
+
+/* Style cho Mục lục */
+.table-of-contents {
+    margin: 40px 0;
+    padding: 25px;
+    background-color: #e6f1ec;
+    border-left: 8px solid var(--color-secondary);
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.table-of-contents h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 26px;
+    border-bottom: 2px dashed var(--color-secondary);
+    padding-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.table-of-contents ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.table-of-contents li {
+    margin-bottom: 10px;
+    list-style: none;
+    margin-left: 0;
+}
+
+.table-of-contents li::before {
+    content: "👉";
+    top: 0;
+}
+
+.table-of-contents li a {
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 400;
+    transition: color 0.3s ease, padding-left 0.3s ease;
+    display: block;
+    padding: 5px 0;
+}
+
+.table-of-contents li a:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 700;
+    padding-left: 5px;
+}
+
+.table-of-contents .level2 {
+    padding-left: 30px;
+}
+
+.table-of-contents .level2::before {
+    content: "•";
+    color: var(--color-secondary);
+    left: 15px;
+    font-size: 18px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 15px 20px;
+    }
+
+    nav {
+        margin-top: 10px;
+    }
+
+    nav a {
+        margin: 0 10px;
+    }
+
+    .hero {
+        height: 350px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+        padding: 10px 20px;
+    }
+
+    main {
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .sidebar {
+        right: 10px;
+        gap: 10px;
+    }
+
+    .sidebar a {
+        padding: 12px;
+        font-size: 18px;
+    }
+
+    .handbook-title {
+        font-size: 28px;
+    }
+
+    .handbook-subtitle {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    h3 {
+        font-size: 20px;
+    }
+
+    p.indent-3em,
+    p.indent-5em {
+        text-indent: 1em;
+    }
+}
+/* --- Contact Form --- */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px auto;
+    max-width: 600px;
+}
+
+.contact-form label {
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 5px rgba(64, 145, 108, 0.3);
+    outline: none;
+}
+
+.contact-form button {
+    background-color: var(--color-secondary);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.contact-form button:hover {
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+}
