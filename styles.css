@@ -311,8 +311,8 @@ footer p {
 .sidebar a {
     background: var(--color-secondary);
     color: white;
-    padding: 18px;
-    border-radius: 50%;
+    padding: 10px;
+    border-radius: 20%;
     text-align: center;
     font-size: 24px;
     text-decoration: none;
@@ -326,6 +326,69 @@ footer p {
     transform: scale(1.15);
     box-shadow: 0 6px 15px rgba(254, 231, 21, 0.5);
 }
+/* Sidebar tổng */
+.sidebar {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 1000;
+}
+
+/* Nút lên đầu trang */
+.sidebar .back-top {
+    background: #ff9800;
+    color: #fff;
+    text-decoration: none;
+    font-size: 22px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.sidebar .back-top:hover {
+    background: #e68900;
+    transform: translateY(-2px);
+}
+
+/* Khung QR + nội dung */
+.sidebar-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 15px 12px;
+    width: 150px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.3;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: 0.3s;
+}
+
+.sidebar-box:hover {
+    transform: translateY(-3px);
+}
+
+/* Ảnh QR mini */
+.sidebar-box .qr-mini {
+    width: 125px;
+    margin-top: 8px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* Link trong sidebar */
+.sidebar-box a {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.sidebar-box a:hover {  
+    text-decoration: underline;
+}
+
 
 /* Style cho Mục lục */
 .table-of-contents {
