@@ -546,3 +546,56 @@ footer p {
     background-color: var(--color-accent);
     color: var(--color-primary);
 }
+.open-hidden-sidebar {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    padding: 10px 14px;
+    font-size: 20px;
+    border-radius: 8px;
+    border: none;
+    background: #40916c; /* màu nền (padding cũng mang màu này) */
+    color: white;
+    cursor: pointer;
+}
+
+
+.hidden-sidebar {
+    position: fixed;
+    border-radius: 20px;
+
+    top: 0;
+    right: -350px;
+    width: 250px;
+    height: 100%;
+    background: #cce9f6;
+    color: white;
+    padding: 20px;
+    transition: 0.3s;
+}
+
+.hidden-sidebar.show {
+    right: 0;
+}
+
+.hidden-sidebar a {
+    color: rgb(255, 0, 0);
+    font-size: 22px;
+    text-decoration: none;
+}
+
+#close-hidden-sidebar .close-btn {
+    background-color: rgb(189, 0, 0);      /* màu đỏ */
+    color: white;               /* chữ trắng */
+    border: none;               /* không viền */
+    padding: 8px 12px;
+    border-radius: 8px;         /* viền bo tròn */
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Hiệu ứng hover (tùy chọn) */
+#close-hidden-sidebar .close-btn:hover {
+    background-color: #cc0000;  /* đỏ đậm hơn khi rê chuột */
+}

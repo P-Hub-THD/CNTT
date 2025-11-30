@@ -35,3 +35,10 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     
 });
+document.getElementById("open-hidden-sidebar").onclick = function () {
+    document.getElementById("hidden-sidebar").classList.add("show");
+};
+
+document.getElementById("close-hidden-sidebar").onclick = function () {
+    document.getElementById("hidden-sidebar").classList.remove("show");
+};

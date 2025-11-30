@@ -199,21 +199,40 @@
             tập…</p>
 
     </main>
+    
 
 
 
-    <div class="sidebar">
+    <div class="sidebar" style="
+    height: 65px;
+    top: 580px;
+">
         <a href="#handbook-start" title="Lên đầu trang" style="width: 50px;">⬆️</a>
     </div>
-    </div>
-    <footer>
-    <div style="text-align: center; padding: 10px; border-top: 1px solid #ccc; font-size: 0.9em;">
-        <p>Quét mã QR hoặc nhấn <a href="https://www.facebook.com/profile.php?id=61583463630269" target="_blank" style="font-weight: bold;color: #ffffff;text-decoration: none;">tại đây</a> để truy cập Fanpage của chúng tôi.</p>
+    <!-- Nút mở sidebar ẩn -->
+<button id="open-hidden-sidebar" class="open-hidden-sidebar" style="
+    width: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+">
+    ☰
+</button>
+
+<!-- Sidebar ẩn -->
+<div id="hidden-sidebar" class="hidden-sidebar show" style="
+    top: 150px;
+    height: 325px;
+">
+    <a href="#" id="close-hidden-sidebar">
+    <button class="close-btn">X</button>
+</a>
+
+    <div style="text-align: center; padding: 10px; border-top: 1px solid #ffffff; font-size: 0.9em;">
+        <p>Quét mã QR hoặc nhấn <a href="https://www.facebook.com/profile.php?id=61583463630269" target="_blank" style="font-weight: bold;color: #000000;text-decoration: none;">tại đây</a> để truy cập Fanpage của chúng tôi.</p>
         <img src="qr_page.jpg" alt="QR Fanpage" style="width: 150px; height: 150px; margin-top: 5px;">
     </div>
-    
-    
-</footer>
+</div>
+    </div>
     <script src="script.js"></script> </body>
 
 </html>
