@@ -36,11 +36,14 @@ header {
     top: 0;
     z-index: 1000;
 }
+.logo {
+    text-decoration: none;
+}
 
 header .logo {
     font-family: 'Montserrat', sans-serif;
-    font-size: 28px;
-    font-weight: 900;
+    font-size: 25px;
+    font-weight: 600;
     color: var(--color-light-text);
     letter-spacing: 1.5px;
     transition: color 0.3s ease;
@@ -54,6 +57,7 @@ nav a {
     margin: 0 15px;
     text-decoration: none;
     color: var(--color-light-text);
+    font-size: 18px;
     font-weight: 400;
     padding: 5px 0;
     position: relative;
@@ -370,25 +374,6 @@ footer p {
 .sidebar-box:hover {
     transform: translateY(-3px);
 }
-
-/* Ảnh QR mini */
-.sidebar-box .qr-mini {
-    width: 125px;
-    margin-top: 8px;
-    border-radius: 10px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-}
-
-/* Link trong sidebar */
-.sidebar-box a {
-    color: #ffffff;
-    font-weight: 600;
-}
-
-.sidebar-box a:hover {  
-    text-decoration: underline;
-}
-
 
 /* Style cho Mục lục */
 .table-of-contents {
