@@ -42,3 +42,4 @@ document.getElementById("open-hidden-sidebar").onclick = function () {
 document.getElementById("close-hidden-sidebar").onclick = function () {
     document.getElementById("hidden-sidebar").classList.remove("show");
 };
+
