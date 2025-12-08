@@ -599,3 +599,127 @@ footer p {
 #close-hidden-sidebar .close-btn:hover {
     background-color: #cc0000;  /* đỏ đậm hơn khi rê chuột */
 }
+/* GENERAL */
+body {
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+    background: #f4f7f6;
+    color: #333;
+}
+
+/* HEADER */
+header {
+    background: #2f6f47;
+    color: white;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-family: "Montserrat", sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    text-decoration: none;
+    color: white;
+}
+
+nav a {
+    color: white;
+    margin-left: 25px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav a.active,
+nav a:hover {
+    border-bottom: 2px solid white;
+    padding-bottom: 5px;
+}
+
+/* CONTAINER */
+.container {
+    width: 80%;
+    margin: 40px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.title {
+    text-align: center;
+    font-family: "Montserrat";
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #2f6f47;
+}
+
+/* UPLOAD BOX */
+.upload-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.upload-box {
+    display: inline-block;
+    background: #eaf3ed;
+    padding: 14px 28px;
+    border-radius: 10px;
+    border: 2px dashed #2f6f47;
+    cursor: pointer;
+    font-size: 18px;
+    color: #2f6f47;
+    font-weight: 600;
+}
+
+.upload-box input {
+    display: none;
+}
+
+/* PREVIEW IMAGE */
+.preview-img {
+    max-width: 350px;
+    display: none;
+    margin: 20px auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* BUTTON */
+.analyze-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 14px 40px;
+    border: none;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 10px;
+    background: #2f6f47;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.analyze-btn:hover {
+    background: #255b3a;
+}
+
+/* RESULT BOX */
+.result-title {
+    margin-top: 30px;
+    font-family: "Montserrat";
+    color: #2f6f47;
+}
+
+.result-box {
+    background: #f8fdf8;
+    border-left: 5px solid #2f6f47;
+    padding: 20px;
+    min-height: 120px;
+    border-radius: 8px;
+    font-size: 17px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
