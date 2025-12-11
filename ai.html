@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="logo.png">
+    <title>AI phân tích</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        /* ======= BỐ CỤC 2 BÊN SONG SONG ======= */
+        .split-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .split-box .left,
+        .split-box .right {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .upload-box {
+            display: block;
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .upload-box input {
+            display: none;
+        }
+
+        .preview-img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            display: none;
+        }
+
+        .analyze-btn {
+            padding: 12px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .result-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 10px;
+            min-height: 150px;
+        }
+
+        /* ======= RESPONSIVE ======= */
+        @media (max-width: 768px) {
+            .split-box {
+                flex-direction: column;
+            }
+
+            .split-box .left,
+            .split-box .right {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Trường THPT TRẦN HƯNG ĐẠO</a>
+        <nav>
+            <a href="index.html">Trang chủ</a>
+            <a href="camnang.html">Cẩm nang</a>
+            <a href="vechungtoi.html">Về chúng tôi</a>
+            <a href="ai.html" class="active">AI phân tích</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <div class="split-box">
+
+            <!-- LEFT: NGHE GIỌNG NÓI -->
+            <div class="left">
+                <h2 class="title">AI PHÂN TÍCH GIỌNG NÓI</h2>
+
+                <label class="upload-box">
+                    <span>Chọn file giọng nói (.mp3)</span>
+                    <input type="file" id="audioInput" accept="audio/*">
+                </label>
+
+                <audio id="audioPreview" controls style="display:none;"></audio>
+
+                <button class="analyze-btn" onclick="analyzeAudio()">Phân tích giọng nói</button>
+            </div>
+
+            <!-- RIGHT: PHÂN TÍCH ẢNH -->
+            <div class="right">
+                <h2 class="title">AI PHÂN TÍCH HÌNH ẢNH</h2>
+
+                <label class="upload-box">
+                    <span>Chọn ảnh để phân tích</span>
+                    <input type="file" id="imgInput" accept="image/*">
+                </label>
+
+                <img id="preview" class="preview-img" />
+
+                <button class="analyze-btn" onclick="analyzeImage()">Phân tích hình ảnh</button>
+            </div>
+
+        </div>
+
+        <!-- KẾT QUẢ -->
+        <h3 style="margin-top: 30px; font-size: 22px;">Kết quả AI</h3>
+        <div id="result" class="result-box"></div>
+
+    </div>
+
+    <script>
+        /* ---------------- KEY ---------------- */
+        let OPENAI_API_KEY =
+            "sk-proj-82rQpSfAbL9Wr8ZuVzBfDpH2aQGQ3YjeQ8WNxTBSLkROUlMGSXCE-QtuhcwZCC3Uvxle4gZBwwT3BlbkFJgX3I_Si3A04a3p2y-" +
+            "LDD5kKfMASDOmVbpxviI3LDa-08COZe3lfNRAXSjStlR14VSvYaBeQMEA";
+
+        /* ----------- PREVIEW AUDIO ----------- */
+        document.getElementById("audioInput").onchange = function () {
+            const file = this.files[0];
+            const audio = document.getElementById("audioPreview");
+
+            if (file) {
+                audio.src = URL.createObjectURL(file);
+                audio.style.display = "block";
+            } else {
+                audio.style.display = "none";
+                audio.src = "";
+            }
+        };
+
+        /* ----------- PHÂN TÍCH GIỌNG NÓI ----------- */
+        async function analyzeAudio() {
+            const fileInput = document.getElementById("audioInput");
+            const resultBox = document.getElementById("result");
+
+            if (!fileInput.files[0]) {
+                resultBox.innerText = "Vui lòng chọn file mp3!";
+                return;
+            }
+
+            resultBox.innerText = "Đang phân tích giọng nói...";
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+
+            formData.append("file", file);
+            formData.append("model", "gpt-4o-mini-tts");
+            formData.append("response_format", "text");
+
+            try {
+                const whisperRes = await fetch("https://api.openai.com/v1/audio/transcriptions", {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${OPENAI_API_KEY}` },
+                    body: formData
+                });
+
+                const text = await whisperRes.text();
+
+                const payload = {
+                    model: "gpt-4o-mini",
+                    messages: [{
+                        role: "user",
+                        content:
+                            "Hãy phân tích giọng nói chấm trên thang điểm 10 theo các tiêu chí: 1. Cảm xúc; 2. Tốc độ nói; 3. Sự rõ ràng; 4. Nhấn nhá; 5. Tự tin. Sau đó gợi ý cải thiện. Nội dung giọng nói: " + text
+                    }]
+                };
+
+                const chatRes = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${OPENAI_API_KEY}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await chatRes.json();
+                resultBox.innerText = data.choices[0].message.content;
+
+            } catch (err) {
+                resultBox.innerText = "Lỗi kết nối hoặc CORS.\n" + err;
+            }
+        }
+
+
+        /* ----------- PHÂN TÍCH ẢNH ----------- */
+        document.getElementById("imgInput").onchange = function () {
+            const file = this.files[0];
+            const img = document.getElementById("preview");
+
+            img.src = URL.createObjectURL(file);
+            img.style.display = "block";
+        };
+
+        async function analyzeImage() {
+            const fileInput = document.getElementById("imgInput");
+            const resultBox = document.getElementById("result");
+
+            if (!fileInput.files[0]) {
+                resultBox.innerText = "Vui lòng chọn ảnh!";
+                return;
+            }
+
+            resultBox.innerText = "Đang phân tích ảnh...";
+
+            const base64 = await toBase64(fileInput.files[0]);
+
+            const payload = {
+                model: "gpt-4o-mini",
+                messages: [
+                    {
+                        role: "user",
+                        content: [
+                            { type: "text", text: "Hãy nhận xét theo các yếu tố: 1. Tư thế; 2. Trang phục; 3. Nét mặt; 4. Ánh mắt; 5. Phong thái. Chấm điểm 10 và gợi ý phát triển." },
+                            { type: "image_url", image_url: { url: base64 } }
+                        ]
+                    }
+                ]
+            };
+
+            try {
+                const res = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${OPENAI_API_KEY}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                resultBox.innerText = data.choices[0].message.content;
+
+            } catch (err) {
+                resultBox.innerText = "Lỗi kết nối hoặc CORS.\n" + err;
+            }
+        }
+
+        /* ----------- BASE64 ----------- */
+        function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
+
+</body>
+
+</html>
