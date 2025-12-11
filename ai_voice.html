@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="logo.png">
+    <title>AI phân tích giọng nói</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Trường THPT TRẦN HƯNG ĐẠO</a>
+        <nav>
+            <a href="index.html">Trang chủ</a>
+            <a href="camnang.html">Cẩm nang</a>
+            <a href="vechungtoi.html">Về chúng tôi</a>
+            <a href="ai.html" class="active">AI phân tích</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2 class="title">AI PHÂN TÍCH GIỌNG NÓI TỪ FILE MP3</h2>
+
+        <div class="upload-section">
+            <label class="upload-box">
+                <span>🎵 Chọn file giọng nói (.mp3)</span>
+                <input type="file" id="audioInput" accept="audio/*">
+            </label>
+        </div>
+
+        <!-- Preview audio -->
+        <audio id="audioPreview" controls style="display:none; margin-top: 15px; width: 100%;"></audio>
+
+        <button class="analyze-btn" onclick="analyzeAudio()">🚀 Phân tích</button>
+
+        <h3 class="result-title">Kết quả AI</h3>
+        <div id="result" class="result-box"></div>
+    </div>
+
+    <script>
+        let OPENAI_API_KEY =
+            "sk-proj-82rQpSfAbL9Wr8ZuVzBfDpH2aQGQ3YjeQ8WNxTBSLkROUlMGSXCE-QtuhcwZCC3Uvxle4gZBwwT3BlbkFJgX3I_Si3A04a3p2y-";
+        OPENAI_API_KEY += "LDD5kKfMASDOmVbpxviI3LDa-08COZe3lfNRAXSjStlR14VSvYaBeQMEA";
+
+        // Preview audio khi upload
+        document.getElementById("audioInput").onchange = function () {
+            const file = this.files[0];
+            const audio = document.getElementById("audioPreview");
+
+            if (file) {
+                audio.src = URL.createObjectURL(file);
+                audio.style.display = "block";
+            } else {
+                audio.style.display = "none";
+                audio.src = "";
+            }
+        };
+
+        async function analyzeAudio() {
+            const fileInput = document.getElementById("audioInput");
+            const resultBox = document.getElementById("result");
+
+            if (!fileInput.files[0]) {
+                resultBox.innerText = "⚠ Vui lòng chọn file mp3!";
+                return;
+            }
+
+            resultBox.innerText = "⏳ Đang phân tích giọng nói...";
+
+            const file = fileInput.files[0];
+
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("model", "gpt-4o-mini-tts");
+            formData.append("response_format", "text");
+
+            try {
+                const whisperRes = await fetch("https://api.openai.com/v1/audio/transcriptions", {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${OPENAI_API_KEY}` },
+                    body: formData
+                });
+
+                const text = await whisperRes.text();
+
+                const payload = {
+                    model: "gpt-4o-mini",
+                    messages: [
+                        {
+                            role: "user",
+                            content:
+                                "Hãy phân tích giọng nói chấm trên thang điểm 10 theo các tiêu chí: 1. Cảm xúc; 2. Tốc độ nói; 3. Sự rõ ràng; 4. Nhấn nhá; 5. Tự tin. Sau đó gợi ý cải thiện. Nội dung giọng nói: " + text
+                        }
+                    ]
+                };
+                
+                const chatRes = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${OPENAI_API_KEY}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await chatRes.json();
+                resultBox.innerText = data.choices[0].message.content;
+
+            } catch (err) {
+                resultBox.innerText = "❌ Lỗi kết nối hoặc CORS.\n" + err;
+            }
+        }
+    </script>
+
+</body>
+</html>
