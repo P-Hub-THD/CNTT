@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Phân tích — Kỹ năng thuyết trình</title>
+  <link rel="icon" type="image/png" href="images/example-logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+<div class="progress-bar"></div>
+
+<header class="header">
+  <div class="header__inner">
+    <a href="index.html" class="header__logo">Kỹ Năng Thuyết Trình</a>
+    <button class="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="header__nav">
+      <a href="index.html" class="header__link">Cẩm nang</a>
+      <a href="ai.html" class="header__link header__link--active">AI phân tích</a>
+    </nav>
+  </div>
+</header>
+<div class="nav-overlay"></div>
+
+<div class="section section--wide" style="padding-top: 40px;">
+
+  <h1 class="heading-section text-center" style="margin-bottom: 6px;">🤖 AI Phân Tích Kỹ Năng Thuyết Trình</h1>
+  <p class="heading-sub text-center" style="margin-bottom: 36px;">Upload hình ảnh, giọng nói hoặc video — AI sẽ đánh giá và gợi ý cải thiện</p>
+
+  <!-- Tabs -->
+  <div class="ai-tabs">
+    <button class="ai-tab active" data-tab="analysis">🔍 Phân tích AI</button>
+    <button class="ai-tab" data-tab="chat">💬 Hỏi đáp AI</button>
+  </div>
+
+  <!-- ===== TAB: PHÂN TÍCH ===== -->
+  <div class="ai-panel active" id="panel-analysis">
+    <div class="card" style="text-align: center;">
+
+      <!-- Drag & Drop Zone -->
+      <div class="dropzone" id="dropzone" onclick="document.getElementById('universalInput').click()">
+        <input type="file" id="universalInput" accept="audio/*,image/*,video/*" style="display:none;" onchange="handleUniversalPreview()">
+
+        <!-- Empty state -->
+        <div class="dropzone__content--empty">
+          <span class="dropzone__icon">☁️</span>
+          <div class="dropzone__text">Kéo thả file vào đây</div>
+          <div class="dropzone__sub">hoặc nhấn để chọn từ máy tính</div>
+          <div class="dropzone__formats">
+            <span class="dropzone__fmt">🎙️ Âm thanh</span>
+            <span class="dropzone__fmt">🖼️ Hình ảnh</span>
+            <span class="dropzone__fmt">🎬 Video</span>
+          </div>
+        </div>
+
+        <!-- Preview state -->
+        <div class="dropzone__content--preview">
+          <div id="universalFileName" class="file-badge" style="display:none;"></div>
+          <div class="preview-area" id="universalPreviewArea" style="display:none;">
+            <audio id="uniPreviewAudio" controls style="display:none; width: 100%;"></audio>
+            <img id="uniPreviewImage" alt="Preview ảnh" style="display:none; max-width:100%; border-radius:8px;">
+            <video id="uniPreviewVideo" controls style="display:none; max-width:100%; border-radius:8px;"></video>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analyze button -->
+      <div class="action-row">
+        <button class="btn btn--primary" id="btnUniversal" onclick="analyzeUniversal()">
+          🚀 Bắt đầu phân tích
+        </button>
+      </div>
+
+      <!-- Result -->
+      <div class="result-card" id="universalResult" style="display:none; text-align: left;">
+        <div class="result-card__title" id="universalResultTitle">📊 Kết quả phân tích</div>
+        <div class="result-card__body" id="universalResultBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: CHATBOT ===== -->
+  <div class="ai-panel" id="panel-chat">
+    <div class="card" style="padding:0; overflow:hidden;">
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-msg chat-msg--ai">
+            Xin chào! Mình là trợ lý AI chuyên về kỹ năng thuyết trình. Hỏi mình bất cứ điều gì nhé:<br><br>
+            • Cách vượt qua nỗi sợ sân khấu<br>
+            • Kỹ thuật nói trước đám đông<br>
+            • Thiết kế slide đẹp<br>
+            • Mở đầu &amp; kết thúc ấn tượng<br>
+            • Ngôn ngữ cơ thể &amp; giọng nói
+          </div>
+        </div>
+
+        <div class="chat-suggestions" id="chatSuggestions">
+          <button class="chat-suggestion" onclick="askSuggestion(this)">Làm sao để hết run khi thuyết trình?</button>
+          <button class="chat-suggestion" onclick="askSuggestion(this)">Cách mở đầu bài thuyết trình ấn tượng?</button>
+          <button class="chat-suggestion" onclick="askSuggestion(this)">Mẹo thiết kế slide đẹp</button>
+          <button class="chat-suggestion" onclick="askSuggestion(this)">Cách kiểm soát tốc độ nói?</button>
+        </div>
+
+        <div class="chat-input-area">
+          <input type="text" class="chat-input" id="chatInput"
+                 placeholder="Nhập câu hỏi về thuyết trình..."
+                 onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="chat-send" id="chatSendBtn" onclick="sendChat()">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__logo">Kỹ Năng Thuyết Trình</div>
+    <div class="footer__divider"></div>
+    <p class="footer__text">2026</p>
+    <p class="footer__powered">Powered by OpenAI</p>
+  </div>
+</footer>
+
+<button class="scroll-top" aria-label="Lên đầu trang">⬆</button>
+<script src="script.js"></script>
+
+<script>
+/* ---- API KEY ---- */
+/* ⚠️ THAY API KEY CỦA BẠN VÀO ĐÂY */
+let OPENAI_API_KEY =
+  "sk-proj-dS1N7Qf7mi9UInAMgWaRBDenChlBHgDMuwiEfNRf7S3_qEAUB" +
+  "Iq32xIw2NSf4hl9_jiVZA5fNYT3BlbkFJdptQ4BWQuiikTyMPfBVuYozxQ7rLImTx1fcdkJ0Pp6esX0VV4ly1KNiw51FVOtrbqOzCqFNqwA";
+
+/* ---- TABS ---- */
+document.querySelectorAll('.ai-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.ai-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.ai-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---- DRAG & DROP ---- */
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('universalInput');
+
+['dragenter', 'dragover'].forEach(evt => {
+  dropzone.addEventListener(evt, e => {
+    e.preventDefault(); e.stopPropagation();
+    dropzone.classList.add('drag-over');
+  });
+});
+['dragleave', 'drop'].forEach(evt => {
+  dropzone.addEventListener(evt, e => {
+    e.preventDefault(); e.stopPropagation();
+    dropzone.classList.remove('drag-over');
+  });
+});
+dropzone.addEventListener('drop', e => {
+  const files = e.dataTransfer.files;
+  if (files.length) {
+    fileInput.files = files;
+    handleUniversalPreview();
+  }
+});
+
+/* ---- FILE TYPE DETECTION & PREVIEW ---- */
+let currentFileType = '';
+
+function handleUniversalPreview() {
+  const f = fileInput.files[0];
+  const badge = document.getElementById('universalFileName');
+  const previewArea = document.getElementById('universalPreviewArea');
+  const aud = document.getElementById('uniPreviewAudio');
+  const img = document.getElementById('uniPreviewImage');
+  const vid = document.getElementById('uniPreviewVideo');
+  const resCard = document.getElementById('universalResult');
+
+  if (!f) return;
+
+  resCard.style.display = 'none';
+
+  const type = f.type;
+  if (type.startsWith('audio/')) currentFileType = 'audio';
+  else if (type.startsWith('image/')) currentFileType = 'image';
+  else if (type.startsWith('video/')) currentFileType = 'video';
+  else currentFileType = 'unknown';
+
+  // Show preview state
+  dropzone.classList.add('has-file');
+  badge.textContent = '✅ Đã chọn: ' + f.name;
+  badge.style.display = 'inline-flex';
+  previewArea.style.display = 'block';
+
+  aud.style.display = 'none'; aud.pause(); aud.removeAttribute('src');
+  img.style.display = 'none'; img.removeAttribute('src');
+  vid.style.display = 'none'; vid.pause(); vid.removeAttribute('src');
+
+  if (currentFileType === 'audio') {
+    aud.src = URL.createObjectURL(f);
+    aud.style.display = 'block';
+  } else if (currentFileType === 'image') {
+    img.src = URL.createObjectURL(f);
+    img.style.display = 'block';
+  } else if (currentFileType === 'video') {
+    vid.src = URL.createObjectURL(f);
+    vid.style.display = 'block';
+  } else {
+    previewArea.style.display = 'none';
+    dropzone.classList.remove('has-file');
+    alert("Vui lòng chọn định dạng âm thanh, hình ảnh hoặc video hợp lệ.");
+  }
+}
+
+/* ---- MARKDOWN RENDERER ---- */
+function renderMD(text) {
+  return typeof marked !== 'undefined' ? marked.parse(text) : text.replace(/\n/g, '<br>');
+}
+
+/* ---- UNIFIED ANALYSIS ROUTER ---- */
+async function analyzeUniversal() {
+  const card = document.getElementById('universalResult');
+  const body = document.getElementById('universalResultBody');
+  const title = document.getElementById('universalResultTitle');
+  const btn = document.getElementById('btnUniversal');
+
+  if (!fileInput.files[0]) {
+    card.style.display = 'block';
+    body.innerHTML = '⚠️ Vui lòng chọn file!';
+    return;
+  }
+
+  const file = fileInput.files[0];
+
+  if (currentFileType === 'audio') {
+    title.innerHTML = '📊 Kết quả phân tích giọng nói';
+    await runAudioAnalysis(file, card, body, btn);
+  } else if (currentFileType === 'image') {
+    title.innerHTML = '📊 Kết quả phân tích hình ảnh';
+    await runImageAnalysis(file, card, body, btn);
+  } else if (currentFileType === 'video') {
+    title.innerHTML = '📊 Kết quả phân tích video';
+    await runVideoAnalysis(file, card, body, btn);
+  } else {
+    card.style.display = 'block';
+    body.innerHTML = '⚠️ Định dạng không được hỗ trợ để phân tích.';
+  }
+}
+
+/* ---- AUDIO ANALYSIS ---- */
+async function runAudioAnalysis(file, card, body, btn) {
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Đang phân tích...';
+  card.style.display = 'block';
+  body.innerHTML = '<div class="loading-dots">⏳ AI đang lắng nghe và phân tích giọng nói</div>';
+
+  const form = new FormData();
+  form.append("file", file);
+  form.append("model", "whisper-1");
+  form.append("response_format", "text");
+
+  try {
+    const wRes = await fetch("https://api.openai.com/v1/audio/transcriptions", {
+      method: "POST", headers: { "Authorization": `Bearer ${OPENAI_API_KEY}` }, body: form
+    });
+    const transcript = await wRes.text();
+
+    const payload = {
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: `Bạn là "Coach AI" — chuyên gia huấn luyện kỹ năng thuyết trình cấp quốc tế với 20 năm kinh nghiệm đào tạo diễn giả chuyên nghiệp. Bạn đang phân tích bài nói từ bản ghi âm (đã chuyển thành văn bản) của một học sinh THPT Việt Nam.
+
+## HƯỚNG DẪN PHÂN TÍCH
+
+Dựa trên bản ghi lời nói, hãy phân tích TỪNG khía cạnh sau một cách chi tiết. Đọc kỹ nội dung, đếm câu, đánh giá cấu trúc logic, phát hiện từ lặp / từ đệm ("ờ", "à", "thì", "là").
+
+## TIÊU CHÍ CHẤM ĐIỂM
+
+- **9-10**: Xuất sắc — Mức diễn giả chuyên nghiệp, gần như không có lỗi
+- **7-8**: Tốt — Thể hiện rõ kỹ năng, có vài điểm nhỏ cần cải thiện
+- **5-6**: Trung bình — Đạt yêu cầu cơ bản, cần luyện tập thêm nhiều
+- **3-4**: Yếu — Có nhiều điểm cần khắc phục ngay
+- **1-2**: Rất yếu — Cần xây dựng lại từ nền tảng
+
+## FORMAT BÁO CÁO
+
+### 📝 Bản ghi tóm tắt
+Tóm tắt nội dung bài nói trong 2-3 câu. Ghi nhận chủ đề, thời lượng ước tính, và ấn tượng chung.
+
+### 📊 Bảng chấm điểm chi tiết
+
+| Tiêu chí | Điểm (/10) | Nhận xét chi tiết |
+|----------|:---------:|----------|
+| 🎭 Cảm xúc & Sắc thái giọng | | Phân tích sự biến đổi cảm xúc qua bài nói: đơn điệu hay phong phú? Có truyền được cảm hứng không? |
+| ⏱️ Tốc độ & Nhịp điệu | | Nói quá nhanh/quá chậm? Có biết dừng nghỉ (pause) đúng lúc? Nhịp đều hay lộn xộn? |
+| 🔊 Phát âm & Độ rõ ràng | | Phát âm chuẩn? Nuốt âm? Nói lắp? Khán giả có dễ nghe không? |
+| 🎯 Kỹ thuật nhấn nhá & Điểm nhấn | | Có nhấn mạnh từ khóa quan trọng? Biết dùng im lặng tạo kịch tính? |
+| 💪 Sự tự tin & Bản lĩnh | | Giọng run hay vững? Có ngập ngừng, nói đệm (ờ, à, thì) nhiều không? |
+| 📝 Nội dung & Cấu trúc logic | | Bài có mở đầu-thân bài-kết luận? Ý tưởng rõ ràng? Dẫn chứng thuyết phục? |
+| 📖 Vốn từ vựng & Diễn đạt | | Từ ngữ đa dạng hay lặp lại? Câu văn mạch lạc? Có dùng hình ảnh/ví dụ sinh động? |
+| 🎪 Khả năng thu hút & Tương tác | | Có câu hỏi tu từ? Lôi cuốn khán giả? Có kêu gọi hành động (call to action)? |
+
+### 🏆 ĐIỂM TỔNG: X/80 (quy đổi: X/10)
+
+### ✅ Điểm mạnh nổi bật (3 điểm)
+Liệt kê 3 điểm mạnh cụ thể nhất, kèm trích dẫn câu/đoạn minh họa từ bài nói.
+
+### ⚠️ Cần cải thiện (3 điểm)
+Liệt kê 3 điểm yếu cụ thể nhất, giải thích TẠI SAO nó ảnh hưởng đến bài thuyết trình.
+
+### 🎯 Bài tập luyện tập (3 bài)
+Đưa ra 3 bài tập CỤ THỂ, KHẢ THI mà học sinh có thể tự luyện tại nhà (ví dụ: đọc to trước gương 5 phút/ngày, ghi âm và nghe lại, tập pause 2 giây trước mỗi ý chính...).
+
+### 💡 Lời khuyên của Coach
+Viết 2-3 câu động viên chân thành, cá nhân hóa dựa trên bài nói. Giọng văn ấm áp như người thầy tâm huyết.`
+        },
+        { role: "user", content: "Đây là bản ghi lời nói (transcript) từ bài thuyết trình của học sinh. Hãy phân tích chi tiết theo rubric:\n\n" + transcript }
+      ]
+    };
+
+    const cRes = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${OPENAI_API_KEY}` },
+      body: JSON.stringify(payload)
+    });
+    const data = await cRes.json();
+    body.innerHTML = renderMD(data.choices[0].message.content);
+  } catch (err) {
+    body.innerHTML = '❌ Lỗi: ' + err.message;
+  } finally {
+    btn.disabled = false; btn.innerHTML = '🚀 Bắt đầu phân tích';
+  }
+}
+
+/* ---- IMAGE ANALYSIS ---- */
+async function runImageAnalysis(file, card, body, btn) {
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Đang phân tích...';
+  card.style.display = 'block';
+  body.innerHTML = '<div class="loading-dots">⏳ AI đang quan sát và phân tích hình ảnh</div>';
+
+  try {
+    const base64 = await toBase64(file);
+    const payload = {
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: `Bạn là "Coach AI" — chuyên gia hàng đầu về ngôn ngữ cơ thể (body language) và huấn luyện viên thuyết trình chuyên nghiệp. Bạn đang phân tích một bức ảnh chụp học sinh THPT Việt Nam trong lúc thuyết trình.
+
+## HƯỚNG DẪN PHÂN TÍCH
+
+Quan sát KỸ LƯỠNG mọi chi tiết trong ảnh: tư thế đứng, hướng cơ thể, vị trí tay, biểu cảm khuôn mặt, hướng mắt nhìn, trang phục, khoảng cách với khán giả/bảng, bối cảnh phòng. Nếu thấy slide/bảng phía sau, nhận xét luôn.
+
+## TIÊU CHÍ CHẤM ĐIỂM
+
+- **9-10**: Xuất sắc — Phong thái chuyên nghiệp, tự tin tuyệt đối
+- **7-8**: Tốt — Thể hiện tốt, có vài chi tiết nhỏ chưa tối ưu
+- **5-6**: Trung bình — Ổn nhưng thiếu sự nổi bật
+- **3-4**: Yếu — Nhiều điểm cần sửa ngay
+- **1-2**: Rất yếu — Cần xây dựng lại từ cơ bản
+
+## FORMAT BÁO CÁO
+
+### 👁️ Ấn tượng đầu tiên
+Mô tả ấn tượng đầu tiên trong 2-3 câu khi nhìn vào bức ảnh. Cảm giác chung: tự tin/rụt rè/năng động/thụ động?
+
+### 📊 Bảng chấm điểm chi tiết
+
+| Tiêu chí | Điểm (/10) | Nhận xét chi tiết |
+|----------|:---------:|----------|
+| 🧍 Tư thế đứng & Trọng tâm | | Đứng thẳng hay khom? Hai chân rộng bằng vai? Trọng tâm vững hay nghiêng? Có dựa vào bàn/tường không? |
+| 🤲 Cử chỉ tay & Điệu bộ | | Tay để ở đâu? Có gestures mở (open) hay khoanh tay (closed)? Tự nhiên hay gượng? |
+| 😊 Biểu cảm khuôn mặt | | Nét mặt tự tin hay căng thẳng? Có mỉm cười? Cơ mặt thư giãn hay gồng? |
+| 👀 Ánh mắt & Giao tiếp mắt | | Nhìn thẳng khán giả hay nhìn xuống/nhìn xa? Ánh mắt sống động hay vô hồn? |
+| 👔 Trang phục & Ngoại hình | | Phù hợp bối cảnh thuyết trình? Gọn gàng? Tạo ấn tượng chuyên nghiệp? |
+| 🎭 Phong thái & Sự tự tin | | Tổng thể toát lên sự chuyên nghiệp? Có "sở hữu sân khấu" (stage presence)? |
+| 📐 Không gian & Vị trí | | Đứng ở vị trí trung tâm? Có quá gần/xa khán giả? Sử dụng không gian sân khấu tốt? |
+| 🎓 Mức độ sẵn sàng chuyên nghiệp | | Tổng thể trông như đang thuyết trình chuyên nghiệp hay chỉ đang "đọc bài"? |
+
+### 🏆 ĐIỂM TỔNG: X/80 (quy đổi: X/10)
+
+### ✅ Điểm mạnh nổi bật (3 điểm)
+Liệt kê 3 điểm mạnh cụ thể, mô tả chính xác những gì bạn THẤY trong ảnh.
+
+### ⚠️ Cần cải thiện (3 điểm)
+Liệt kê 3 điểm yếu cụ thể, giải thích TẠI SAO nó ảnh hưởng đến hiệu quả thuyết trình và CÁCH SỬA.
+
+### 🪞 Mẹo ngôn ngữ cơ thể (3 mẹo)
+Đưa ra 3 mẹo CỤ THỂ, DỄ ÁP DỤNG NGAY mà học sinh có thể thực hành trước gương (ví dụ: "Mở rộng hai vai, hạ vai xuống, tưởng tượng có sợi dây kéo đỉnh đầu lên trời").
+
+### 💡 Lời khuyên của Coach
+Viết 2-3 câu động viên chân thành. Giọng văn ấm áp, khích lệ sự tiến bộ.`
+        },
+        {
+          role: "user",
+          content: [
+            { type: "text", text: "Đây là ảnh chụp học sinh đang thuyết trình trước lớp/khán giả. Hãy quan sát kỹ mọi chi tiết và phân tích toàn diện theo rubric." },
+            { type: "image_url", image_url: { url: base64 } }
+          ]
+        }
+      ]
+    };
+
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${OPENAI_API_KEY}` },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error(res.statusText);
+    const data = await res.json();
+    body.innerHTML = renderMD(data.choices[0].message.content);
+  } catch (err) {
+    body.innerHTML = '❌ Lỗi: ' + err.message;
+  } finally {
+    btn.disabled = false; btn.innerHTML = '🚀 Bắt đầu phân tích';
+  }
+}
+
+/* ---- VIDEO ANALYSIS ---- */
+async function runVideoAnalysis(file, card, body, btn) {
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Đang xử lý...';
+  card.style.display = 'block';
+
+  const updateProgress = (step) => {
+    body.innerHTML = `
+      <div style="padding: 10px 0;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; opacity: ${step >= 1 ? '1' : '0.4'}; font-weight: ${step === 1 ? '600' : '400'}; color: ${step === 1 ? 'var(--primary)' : 'var(--text)'};">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: ${step > 1 ? 'var(--primary)' : (step === 1 ? 'var(--gradient-main)' : 'var(--border)')}; color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">${step > 1 ? '✓' : '1'}</div>
+          <span>⚙️ Đang trích xuất dữ liệu (Âm thanh & Hình ảnh)</span>
+          ${step === 1 ? '<span class="spinner" style="border-color: rgba(99,102,241,0.2); border-top-color: var(--primary); width: 16px; height: 16px; margin-left: auto;"></span>' : ''}
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; opacity: ${step >= 2 ? '1' : '0.4'}; font-weight: ${step === 2 ? '600' : '400'}; color: ${step === 2 ? 'var(--primary)' : 'var(--text)'};">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: ${step > 2 ? 'var(--primary)' : (step === 2 ? 'var(--gradient-main)' : 'var(--border)')}; color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">${step > 2 ? '✓' : '2'}</div>
+          <span>🤖 Coach AI đang tổng hợp và đánh giá</span>
+          ${step === 2 ? '<span class="spinner" style="border-color: rgba(99,102,241,0.2); border-top-color: var(--primary); width: 16px; height: 16px; margin-left: auto;"></span>' : ''}
+        </div>
+      </div>
+    `;
+  };
+
+  try {
+    updateProgress(1);
+    
+    // 1. Prepare Whisper Form
+    const form = new FormData();
+    form.append("file", file);
+    form.append("model", "whisper-1");
+    form.append("response_format", "text");
+    
+    // 2. Run Whisper & Frame Extraction Concurrently
+    const whisperPromise = fetch("https://api.openai.com/v1/audio/transcriptions", {
+      method: "POST", headers: { "Authorization": `Bearer ${OPENAI_API_KEY}` }, body: form
+    }).then(async res => {
+      if (res.ok) return await res.text();
+      return "(Không trích xuất được âm thanh hoặc video không có tiếng)";
+    }).catch(() => "(Lỗi khi trích xuất âm thanh)");
+
+    const framesPromise = extractFrames(file, 3);
+
+    // Wait for both to finish simultaneously
+    const [transcript, frames] = await Promise.all([whisperPromise, framesPromise]);
+
+    // 3. AI Phân tích
+    updateProgress(2);
+
+    const contentPayload = [
+      { type: "text", text: "Hãy phân tích video thuyết trình này. Dưới đây là nội dung người đó nói:\n\n" + transcript + "\n\nKèm theo là các hình ảnh từ video để bạn đánh giá phong thái:" }
+    ];
+    for (const frame of frames) {
+      contentPayload.push({ type: "image_url", image_url: { url: frame } });
+    }
+
+    const payload = {
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: `Bạn là "Coach AI" — chuyên gia huấn luyện kỹ năng thuyết trình toàn diện. Bạn đang phân tích một video thuyết trình của học sinh THPT Việt Nam thông qua BẢN GHI LỜI NÓI (transcript) và MỘT SỐ HÌNH ẢNH quan sát được.
+
+## HƯỚNG DẪN PHÂN TÍCH
+
+Đánh giá TOÀN DIỆN cả 2 khía cạnh:
+1. Nội dung & Giọng điệu (dựa vào transcript): Từ ngữ, logic, cấu trúc, cách diễn đạt, từ đệm.
+2. Ngôn ngữ cơ thể (dựa vào hình ảnh): Tư thế, ánh mắt, cử chỉ tay, năng lượng.
+
+LƯU Ý TUYỆT ĐỐI QUAN TRỌNG: KHÔNG ĐƯỢC dùng các từ như "khung hình", "frame", "hình ảnh trích xuất", "ảnh 1", "ảnh 2" trong bài phân tích. Hãy nhận xét một cách tự nhiên như thể bạn đang xem trực tiếp một đoạn video liên tục và mượt mà. Đánh giá sự thay đổi và nhất quán xuyên suốt phần trình bày.
+
+## TIÊU CHÍ CHẤM ĐIỂM
+
+- **9-10**: Xuất sắc — Hoàn hảo cả nội dung lẫn phong thái
+- **7-8**: Tốt — Khá tốt, có vài điểm nhỏ cần cải thiện
+- **5-6**: Trung bình — Đạt yêu cầu cơ bản
+- **3-4**: Yếu — Cần cải thiện nhiều
+- **1-2**: Rất yếu — Cần xây dựng lại từ đầu
+
+## FORMAT BÁO CÁO
+
+### 🎬 Tổng quan bài thuyết trình
+Mô tả ấn tượng tổng thể về cả nội dung truyền đạt và phong thái xuất hiện trong 3-4 câu. 
+
+### 📊 Bảng chấm điểm chi tiết
+
+| Tiêu chí | Điểm (/10) | Nhận xét chi tiết |
+|----------|:---------:|----------|
+| 📝 Nội dung & Cấu trúc | | Bài nói có mạch lạc, logic? Nội dung có thuyết phục? |
+| 📖 Từ vựng & Diễn đạt | | Cách dùng từ, câu cú trong bài nói? Có bị lặp từ/từ đệm không? |
+| 🧍 Tư thế & Tác phong | | Phong thái đứng đắn? Tự tin? Trọng tâm vững vàng? |
+| 🤲 Cử chỉ tay & Điệu bộ | | Ngôn ngữ cơ thể có đa dạng không? Mở (open) hay đóng? |
+| 👀 Giao tiếp mắt | | Có sự kết nối với khán giả qua ánh mắt? |
+| 😊 Biểu cảm khuôn mặt | | Khuôn mặt có bộc lộ cảm xúc phù hợp với câu chuyện đang nói? |
+| ⚡ Năng lượng & Tự tin | | Sự tự tin toát ra từ hành động và lời nói xuyên suốt video? |
+| 🔄 Sự đồng bộ (Body & Speech) | | Cử chỉ có khớp với nội dung đang nói không? Hành động có bổ trợ cho lời nói? |
+
+### 🏆 ĐIỂM TỔNG: X/80 (quy đổi: X/10)
+
+### ✅ Điểm sáng nổi bật (3 điểm)
+Liệt kê 3 điểm mạnh nhất của bài nói (bao gồm cả nội dung và phong thái).
+
+### ⚠️ Cần khắc phục (3 điểm)
+Liệt kê 3 điểm yếu cần sửa ngay để bài nói hoàn thiện hơn.
+
+### 🏋️ Chiến lược luyện tập (3 bài tập)
+Gợi ý 3 bài tập thực hành kết hợp cả việc soạn nội dung và sửa dáng.
+
+### 💡 Lời khuyên của Coach
+Viết 2-3 câu khích lệ chân thành, cá nhân hóa dựa trên những gì quan sát được.`
+        },
+        { role: "user", content: contentPayload }
+      ]
+    };
+
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${OPENAI_API_KEY}` },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) throw new Error(res.statusText);
+    const data = await res.json();
+    body.innerHTML = renderMD(data.choices[0].message.content);
+
+  } catch (err) {
+    body.innerHTML = '❌ Lỗi: ' + err.message;
+  } finally {
+    btn.disabled = false; btn.innerHTML = '🚀 Bắt đầu phân tích';
+  }
+}
+
+/* ---- VIDEO FRAME EXTRACTION ---- */
+async function extractFrames(videoFile, numFrames = 3) {
+  return new Promise((resolve, reject) => {
+    const video = document.createElement('video');
+    video.src = URL.createObjectURL(videoFile);
+    video.crossOrigin = 'anonymous';
+    video.muted = true;
+
+    video.addEventListener('loadeddata', async () => {
+      const duration = video.duration || 5;
+      const frames = [];
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      const step = duration / (numFrames + 1);
+
+      for (let i = 1; i <= numFrames; i++) {
+        video.currentTime = step * i;
+        await new Promise(r => video.addEventListener('seeked', r, { once: true }));
+
+        const maxDim = 512;
+        let w = video.videoWidth;
+        let h = video.videoHeight;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+          else { w = Math.round((w * maxDim) / h); h = maxDim; }
+        }
+        canvas.width = w;
+        canvas.height = h;
+        ctx.drawImage(video, 0, 0, w, h);
+        frames.push(canvas.toDataURL('image/jpeg', 0.8));
+      }
+      URL.revokeObjectURL(video.src);
+      resolve(frames);
+    });
+
+    video.addEventListener('error', () => reject(new Error('Lỗi load video')));
+  });
+}
+
+/* ---- CHATBOT ---- */
+const chatHistory = [
+  {
+    role: "system",
+    content: `Bạn là "Coach AI" — trợ lý huấn luyện kỹ năng thuyết trình thân thiện, dành cho học sinh THPT Việt Nam.
+
+Nguyên tắc:
+- Trả lời tiếng Việt, gần gũi, dễ hiểu, có chút hài hước
+- Lời khuyên CỤ THỂ, KHẢ THI cho học sinh
+- Dùng emoji phù hợp, trình bày có cấu trúc
+- Cho ví dụ thực tế khi được hỏi kỹ thuật
+- Kết thúc bằng câu động viên hoặc gợi mở
+
+Phạm vi: nói trước đám đông, slide, ngôn ngữ cơ thể, giọng nói, sân khấu, cấu trúc bài, tương tác khán giả.`
+  }
+];
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const container = document.getElementById('chatMessages');
+  const sendBtn = document.getElementById('chatSendBtn');
+  const text = input.value.trim();
+  if (!text) return;
+
+  document.getElementById('chatSuggestions').style.display = 'none';
+
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-msg chat-msg--user';
+  userMsg.textContent = text;
+  container.appendChild(userMsg);
+  input.value = '';
+  sendBtn.disabled = true;
+  container.scrollTop = container.scrollHeight;
+
+  const aiMsg = document.createElement('div');
+  aiMsg.className = 'chat-msg chat-msg--ai';
+  aiMsg.innerHTML = '<div class="loading-dots">Đang suy nghĩ</div>';
+  container.appendChild(aiMsg);
+  container.scrollTop = container.scrollHeight;
+
+  chatHistory.push({ role: "user", content: text });
+
+  try {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${OPENAI_API_KEY}` },
+      body: JSON.stringify({ model: "gpt-4o-mini", messages: chatHistory })
+    });
+    const data = await res.json();
+    const reply = data.choices[0].message.content;
+    chatHistory.push({ role: "assistant", content: reply });
+    aiMsg.innerHTML = renderMD(reply);
+  } catch (err) {
+    aiMsg.innerHTML = '❌ Lỗi: ' + err.message;
+  } finally {
+    sendBtn.disabled = false;
+    container.scrollTop = container.scrollHeight;
+  }
+}
+
+function askSuggestion(btn) {
+  document.getElementById('chatInput').value = btn.textContent;
+  sendChat();
+}
+
+/* ---- HELPERS ---- */
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+</script>
+
+</body>
+</html>

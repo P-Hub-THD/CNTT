@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cẩm nang Kỹ năng thuyết trình</title>
+  <link rel="icon" type="image/png" href="images/example-logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="progress-bar"></div>
+
+<header class="header">
+  <div class="header__inner">
+    <a href="index.html" class="header__logo">Kỹ Năng Thuyết Trình</a>
+    <button class="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="header__nav">
+      <a href="index.html" class="header__link header__link--active">Cẩm nang</a>
+      <a href="ai.html" class="header__link">AI phân tích</a>
+    </nav>
+  </div>
+</header>
+<div class="nav-overlay"></div>
+
+<!-- Mini Hero -->
+<section class="mini-hero">
+  <div class="mini-hero__content">
+    <h1 class="mini-hero__title">📖 Cẩm Nang <span class="gradient-text">Kỹ Năng Thuyết Trình</span></h1>
+    <p class="mini-hero__subtitle">
+      Tài liệu hướng dẫn toàn diện giúp bạn tự tin trước đám đông — từ kỹ thuật giọng nói, ngôn ngữ cơ thể đến thiết kế slide chuyên nghiệp.
+    </p>
+  </div>
+</section>
+
+<!-- Feature Cards -->
+<div class="section" style="padding-top: 36px; padding-bottom: 0;">
+  <div class="feature-row animate-in">
+    <div class="feat-card">
+      <div class="feat-card__icon">🎤</div>
+      <div class="feat-card__title">Giọng nói & Ngữ điệu</div>
+      <div class="feat-card__desc">Tốc độ, nhấn nhá, cảm xúc — làm chủ giọng nói để truyền cảm hứng</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card__icon">🧍</div>
+      <div class="feat-card__title">Ngôn ngữ cơ thể</div>
+      <div class="feat-card__desc">Tư thế, ánh mắt, cử chỉ tay — giao tiếp không lời hiệu quả</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card__icon">📊</div>
+      <div class="feat-card__title">Thiết kế Slide</div>
+      <div class="feat-card__desc">Bố cục, màu sắc, typography — tạo slide hỗ trợ bài thuyết trình</div>
+    </div>
+  </div>
+</div>
+
+<!-- PDF Viewer -->
+<div style="padding: 24px clamp(16px, 4vw, 48px); width: 100%; max-width: 100%; margin: 0 auto; box-sizing: border-box;">
+  <div class="card animate-in" style="text-align: center; max-width: 100%; width: 100%; margin: 0 auto; padding: 24px;">
+    <iframe src="camnang-thuyettrinh.pdf" class="pdf-viewer" style="width: 100%; height: 90vh; border: none; border-radius: 8px;"></iframe>
+    <div class="action-row" style="margin-top: 24px;">
+      <a href="camnang-thuyettrinh.pdf" download="Cam-nang-thuyet-trinh.pdf" class="btn btn--primary">⬇️ Tải xuống PDF</a>
+      <a href="ai.html" class="btn btn--ghost">🤖 Thử AI phân tích ngay</a>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__logo">Kỹ Năng Thuyết Trình</div>
+    <div class="footer__divider"></div>
+    <p class="footer__text">2026</p>
+    <p class="footer__powered">Powered by OpenAI</p>
+  </div>
+</footer>
+
+<button class="scroll-top" aria-label="Lên đầu trang">⬆</button>
+<script src="script.js"></script>
+</body>
+</html>
